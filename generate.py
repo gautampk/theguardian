@@ -82,7 +82,7 @@ for pillar in pillars:
             
             articles[id] += tabs + '<img src=\"' + str(article['fields'].get('thumbnail')) + '\" width=550 alt=\"Article thumbnail\" />\n'
             articles[id] += tabs + '<article>\n'
-            articles[id] += tabs + '\t' + sub(r'<aside.*<\/aside>', '', article['fields']['body'], flags=DOTALL) + '\n'
+            articles[id] += tabs + '\t' + sub(r'<aside.*?<\/aside>', '', article['fields']['body'], flags=DOTALL) + '\n'
             articles[id] += tabs + '</article>\n'
 
 # Create new files
