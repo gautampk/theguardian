@@ -65,7 +65,7 @@ for pillar in pillars:
             pub_date = datetime.strftime(datetime.strptime(article['webPublicationDate'], '%Y-%m-%dT%H:%M:%SZ'), '%Y-%m-%d %H:%M:%S GMT')
 
             articles[id] = ''
-            articles[id] += tabs + '<h2>' + article['fields']['headline'] + '</h2>\n'
+            articles[id] += tabs + '<h2 class=\"article\">' + article['fields']['headline'] + '</h2>\n'
             articles[id] += tabs + '<em>' + pub_date + '&nbsp;&bull;&nbsp;<a href=\"' + article['webUrl'] + '\">permalink</a></em><br />\n'
             articles[id] += tabs + '<img src=\"' + str(article['fields'].get('thumbnail')) + '\" width=550 alt=\"Article thumbnail\" />\n'
             articles[id] += tabs + '<article>\n'
