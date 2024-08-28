@@ -1,2 +1,3 @@
 # Script is written for Python 3.12, but will be compatible with anything from 3.5 and up with minor modifications (replace .now(UTC) with .utcnow and revert to the older method of dictionary concatenation).
 requests
+dotenv
