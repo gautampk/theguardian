@@ -52,7 +52,7 @@ for pillar in sorted(pillars.keys()):
         for article in sorted(pillars[pillar][section].keys()):
             paper += tabs + '\t<item>\n'
             paper += tabs + '\t\t<dt><a href=\"' + basename(normpath(pillars[pillar][section][article]['id'])) + '.html\">' + pillars[pillar][section][article]['fields']['headline'] + '</a></dt>\n'
-            paper += tabs + '\t\t<dd><img src=\"' + str(pillars[pillar][section][article]['fields'].get('thumbnail')) + '\" height=100 /></dd>\n'
+            paper += tabs + '\t\t<dd><img src=\"' + str(pillars[pillar][section][article]['fields'].get('thumbnail')) + '\" height=100 alt=\"Article thumbnail\" /></dd>\n'
             paper += tabs + '\t</item>\n'
         paper += tabs + '</dl>\n'
 
