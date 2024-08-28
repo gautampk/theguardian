@@ -65,7 +65,7 @@ for pillar in pillars:
             articles[id] = ''
             articles[id] += tabs + '<h2>' + article['fields']['headline'] + '</h2>\n'
             articles[id] += tabs + '<em>' + pub_date + '&nbsp;&bull;&nbsp;<a href=\"' + article['webUrl'] + '\">permalink</a></em><br />\n'
-            articles[id] += tabs + '<img src=\"' + str(article['fields'].get('thumbnail')) + '\" height=300 />\n'
+            articles[id] += tabs + '<img src=\"' + str(article['fields'].get('thumbnail')) + '\" width=550 alt=\"Article thumbnail\" />\n'
             articles[id] += tabs + '<article>\n'
             articles[id] += tabs + '\t' + sub(r'<aside.*<\/aside>', '', article['fields']['body']) + '\n'
             articles[id] += tabs + '</article>\n'
