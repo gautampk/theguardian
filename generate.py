@@ -54,8 +54,8 @@ paper += tabs + '</ul>\n'
 for pillar in sorted(pillars.keys()):
     paper += tabs + '<h2 id=\"' + pillar.replace(' ', '_') + '\">' + pillar + '</h2>\n'
 
-    # Do Top Stories first, if it exists
-    for section in sorted( pillars[pillar].keys(), key=lambda d: 0 if d=='Top stories' else sorted(pillars[pillar].keys()).index(d)+1 ):
+    # Order should be Top stories, UK news, Internation, everything else.
+    for section in sorted( pillars[pillar].keys(), key=lambda d: 0 if d=='Top stories' else 1 if d=='UK news' else 2 if d=='International' else sorted(pillars[pillar].keys()).index(d)+3 ):
         paper += tabs + '<h3 id=\"' + section.replace(' ', '_') + '\">' + section + '</h3>\n'
         paper += tabs + '<dl>\n'
         for article in sorted(pillars[pillar][section].keys()):
