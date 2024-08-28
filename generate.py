@@ -5,6 +5,7 @@ from shutil import rmtree
 from os.path import normpath, basename
 from re import sub
 from dotenv import load_dotenv
+from string import ascii_letters
 
 load_dotenv()
 url = 'https://content.guardianapis.com/theguardian/mainsection'
@@ -52,7 +53,9 @@ paper += tabs + '</ul>\n'
 
 for pillar in sorted(pillars.keys()):
     paper += tabs + '<h2 id=\"' + pillar.replace(' ', '_') + '\">' + pillar + '</h2>\n'
-    for section in sorted(pillars[pillar].keys()):
+
+    # Do Top Stories first, if it exists
+    for section in sorted( pillars[pillar].keys(), key=lambda d: 0 if 'Top stores' else sorted(pillars[pillar].keys()).index(d)+1 ):
         paper += tabs + '<h3 id=\"' + section.replace(' ', '_') + '\">' + section + '</h3>\n'
         paper += tabs + '<dl>\n'
         for article in sorted(pillars[pillar][section].keys()):
