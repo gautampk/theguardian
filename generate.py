@@ -7,7 +7,7 @@ from re import sub
 from dotenv import load_dotenv
 
 load_dotenv()
-url = 'https://content.guardianapis.com/search'
+url = 'https://content.guardianapis.com/theguardian/mainsection'
 now = datetime.utcnow() # Replace with datetime.now(UTC) for Python 3.12 and up
 qs_params = {
     'api-key': getenv('GUARDIAN_API_KEY'),
@@ -15,7 +15,8 @@ qs_params = {
     'to-date': now.strftime('%Y-%m-%d'),
     'use-date': 'newspaper-edition',
     'page-size': 50,
-    'show-fields': 'headline,body,thumbnail'
+    'show-fields': 'headline,body,thumbnail,byline',
+    'show-tags': 'newspaper-book-section'
 }
 
 news = []
@@ -71,6 +72,10 @@ for pillar in pillars:
 
             articles[id] = ''
             articles[id] += tabs + '<h2 class=\"article\">' + article['fields']['headline'] + '</h2>\n'
+
+            if article['fields']['byline']:
+                articles[id] += tabs + article['fields']['byline'] + '<br />\n'
+
             articles[id] += tabs + '<em>' + pub_date + '&nbsp;&bull;&nbsp;<a href=\"' + article['webUrl'] + '\">permalink</a></em><br />\n'
             articles[id] += tabs + '<img src=\"' + str(article['fields'].get('thumbnail')) + '\" width=550 alt=\"Article thumbnail\" />\n'
             articles[id] += tabs + '<article>\n'
