@@ -29,14 +29,14 @@ for page in news:
     for article in page['results']:
         if article['pillarName'] in pillars:
             # Pillar and section both exist
-            if article['sectionName'] in pillars[article['pillarName']]:
-                pillars[article['pillarName']][article['sectionName']][article['fields']['headline']] = article
+            if article['tags'][0]['webTitle'] in pillars[article['pillarName']]:
+                pillars[article['pillarName']][article['tags'][0]['webTitle']][article['fields']['headline']] = article
             # Pillar exists but section doesn't
             else:
-                pillars[article['pillarName']][article['sectionName']] = {article['fields']['headline']: article}
+                pillars[article['pillarName']][article['tags'][0]['webTitle']] = {article['fields']['headline']: article}
         else:
             # Neither pillar nor section exit
-            pillars[article['pillarName']] = {article['sectionName']: {article['fields']['headline']: article}}
+            pillars[article['pillarName']] = {article['tags'][0]['webTitle']: {article['fields']['headline']: article}}
 
 # Tidy up
 del news
