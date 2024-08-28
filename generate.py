@@ -44,10 +44,15 @@ paper = ''
 tabs = '\t\t\t'
 
 # Create listings for index file
+paper += tabs + '<ul class=\"nav\">\n'
 for pillar in sorted(pillars.keys()):
-    paper += tabs + '<h2 id=\"' + pillar + '\">' + pillar + '</h2>\n'
+    paper += tabs + '\t<li><h2><a href=\"#' + pillar.replace(' ', '_') + '\">' + pillar + '</a></h2></li>\n'
+paper += tabs + '</ul>\n'
+
+for pillar in sorted(pillars.keys()):
+    paper += tabs + '<h2 id=\"' + pillar.replace(' ', '_') + '\">' + pillar + '</h2>\n'
     for section in sorted(pillars[pillar].keys()):
-        paper += tabs + '<h3 id=\"' + section + '\">' + section + '</h3>\n'
+        paper += tabs + '<h3 id=\"' + section.replace(' ', '_') + '\">' + section + '</h3>\n'
         paper += tabs + '<dl>\n'
         for article in sorted(pillars[pillar][section].keys()):
             paper += tabs + '\t<item>\n'
