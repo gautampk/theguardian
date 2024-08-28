@@ -3,7 +3,7 @@ from datetime import datetime
 from os import mkdir, getenv
 from shutil import rmtree
 from os.path import normpath, basename
-from re import sub
+from re import sub, DOTALL
 from dotenv import load_dotenv
 from string import ascii_letters
 
@@ -82,7 +82,7 @@ for pillar in pillars:
             
             articles[id] += tabs + '<img src=\"' + str(article['fields'].get('thumbnail')) + '\" width=550 alt=\"Article thumbnail\" />\n'
             articles[id] += tabs + '<article>\n'
-            articles[id] += tabs + '\t' + sub(r'<aside.*<\/aside>', '', article['fields']['body']) + '\n'
+            articles[id] += tabs + '\t' + sub(r'<aside.*<\/aside>', '', article['fields']['body'], flags=DOTALL) + '\n'
             articles[id] += tabs + '</article>\n'
 
 # Create new files
