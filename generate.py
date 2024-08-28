@@ -1,5 +1,5 @@
 from requests import get
-from datetime import datetime, UTC
+from datetime import datetime
 from os import mkdir, getenv
 from shutil import rmtree
 from os.path import normpath, basename
@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 url = 'https://content.guardianapis.com/search'
-now = datetime.now(UTC)
+now = datetime.utcnow() # Replace with datetime.now(UTC) for Python 3.12 and up
 qs_params = {
     'api-key': getenv('GUARDIAN_API_KEY'),
     'from-date': now.strftime('%Y-%m-%d'),
@@ -19,9 +19,9 @@ qs_params = {
 }
 
 news = []
-news.append(get(url, params=(qs_params | {'page': '1'})).json()['response'])
+news.append(get(url, params={**qs_params, **{'page': '1'}}).json()['response'])
 for page in range(2, news[0]['pages'] + 1):
-    news.append(get(url, params=(qs_params | {'page': str(page)})).json()['response'])
+    news.append(get(url, params={**qs_params , **{'page': str(page)}}).json()['response'])
 
 pillars = {}
 for page in news:
