@@ -1,14 +1,16 @@
 from requests import get
 from datetime import datetime, UTC
-from os import mkdir
+from os import mkdir, getenv
 from shutil import rmtree
 from os.path import normpath, basename
 from re import sub
+from dotenv import load_dotenv
 
+load_dotenv()
 url = 'https://content.guardianapis.com/search'
 now = datetime.now(UTC)
 qs_params = {
-    'api-key': 'your-guardian-api-key-here',
+    'api-key': getenv('GUARDIAN_API_KEY'),
     'from-date': now.strftime('%Y-%m-%d'),
     'to-date': now.strftime('%Y-%m-%d'),
     'use-date': 'newspaper-edition',
