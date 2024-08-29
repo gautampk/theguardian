@@ -1,0 +1,10 @@
+# The Guardian
+<!-- today_date_normal -->, retrieved at <!-- retrieved_timestamp --></em>
+
+<!-- paper -->
+
+=> https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2010/03/01/poweredbyguardianBLACK.png Powered by the Guardian
+
+Copyright &copy; <!-- today_year_normal --> Guardian News & Media Limited or its affiliated companies. Retrieved in accordance with the Guardian Open Platform Terms & Conditions.
+
+=> https://www.theguardian.com/open-platform/terms-and-conditions Guardian Open Platform Terms & Conditions
