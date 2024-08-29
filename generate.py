@@ -45,6 +45,8 @@ del news
 paper = ''
 tabs = '\t\t\t'
 
+gpaper = '' # Gemini
+
 # Create listings for index file
 paper += tabs + '<ul class=\"nav\">\n'
 for pillar in sorted(pillars.keys()):
@@ -53,20 +55,27 @@ paper += tabs + '</ul>\n'
 
 for pillar in sorted(pillars.keys()):
     paper += tabs + '<h2 id=\"' + pillar.replace(' ', '_') + '\">' + pillar + '</h2>\n'
+    gpaper += '## ' + pillar + '\n\n';
 
     # Order should be Top stories, UK news, Internation, everything else.
     for section in sorted( pillars[pillar].keys(), key=lambda d: 0 if d=='Top stories' else 1 if d=='UK news' else 2 if d=='International' else sorted(pillars[pillar].keys()).index(d)+3 ):
         paper += tabs + '<h3 id=\"' + section.replace(' ', '_') + '\">' + section + '</h3>\n'
+        gpaper += '### ' + section + '\n\n'
+
         paper += tabs + '<dl>\n'
         for article in sorted(pillars[pillar][section].keys()):
             paper += tabs + '\t<item>\n'
             paper += tabs + '\t\t<dt><a href=\"' + basename(normpath(pillars[pillar][section][article]['id'])) + '.html\">' + pillars[pillar][section][article]['fields']['headline'] + '</a></dt>\n'
             paper += tabs + '\t\t<dd><img src=\"' + str(pillars[pillar][section][article]['fields'].get('thumbnail')) + '\" height=100 alt=\"Article thumbnail\" /></dd>\n'
             paper += tabs + '\t</item>\n'
+
+            gpaper += '=> ' + basename(normpath(pillars[pillar][section][article]['id'])) + '.gmi' + '\t' + pillars[pillar][section][article]['fields']['headline'] + '\n\n'
         paper += tabs + '</dl>\n'
 
 # Create articles for article files
 articles = {}
+garticles = {} # Gemini
+
 for pillar in pillars:
     for section in pillars[pillar]:
         for _, article in pillars[pillar][section].items():
@@ -76,48 +85,80 @@ for pillar in pillars:
             articles[id] = ''
             articles[id] += tabs + '<h2 class=\"article\">' + article['fields']['headline'] + '</h2>\n'
 
+            garticles[id] = ''
+            garticles[id] += '## ' + article['fields']['headline'] + '\n\n'
+
             if article['fields']['byline']:
                 articles[id] += tabs + '<address class=\"author\">' + article['fields']['byline'] + '</address><br />'
+                garticles[id] += 'By: ' + article['fields']['byline'] + '\n\n'
+
             articles[id] += '<time pubdate datetime=\"' + article['webPublicationDate'] + '\">' + pub_date + '</time>&nbsp;&bull;&nbsp;<a href=\"' + article['webUrl'] + '\">permalink</a><br />\n'
-            
+            garticles[id] += pub_date + '\n\n'
+
             articles[id] += tabs + '<img src=\"' + str(article['fields'].get('thumbnail')) + '\" width=550 alt=\"Article thumbnail\" />\n'
             articles[id] += tabs + '<article>\n'
             articles[id] += tabs + '\t' + sub(r'<aside.*?<\/aside>', '', article['fields']['body'], flags=DOTALL) + '\n'
             articles[id] += tabs + '</article>\n'
+
+            tmp_g_article = sub(r'<aside.*?<\/aside>', '', article['fields']['body'], flags=DOTALL)
+            tmp_g_article = sub(r'<\/p>', '\n\n', tmp_g_article)
+            tmp_g_article = sub(r'<p>', '', tmp_g_article)
+            tmp_g_article = sub(r'<.*?>', '', tmp_g_article)
+
+            garticles[id] += tmp_g_article + '\n\n'
+            garticles[id] += '=> ' + article['webUrl'] + '\tPermalink'
 
 # Create new files
 ## Remove old ones and re-create folder
 rmtree('html')
 mkdir('html')
 
+rmtree('gemini')
+mkdir('gemini')
+
 ## Load template
 with open('template.html', 'r') as f:
     template = f.read()
+
+with open('template.gmi', 'r') as f:
+    gtemplate = f.read()
 
 ## Variables to replace in template
 replace_vars = {
     'today_date_normal': now.strftime('%-d %B %Y'),
     'retrieved_timestamp': now.strftime('%H:%M:%S GMT'),
     'today_year_normal': now.strftime('%Y'),
-    'paper': paper
+    'paper': paper,
+    'gpaper': gpaper
 }
 
 ## Index file
 index = template
+gindex = gtemplate
 for var in replace_vars:
     index = index.replace('<!-- ' + str(var) + ' -->', replace_vars[var])
+    gindex = gindex.replace('<!-- ' + str(var) + ' -->', replace_vars[var])
 
 with open('html/index.html', 'w') as f:
     f.write(index)
 
+with open('gemini/index.gmi', 'w') as f:
+    f.write(gindex)
+
 ## Article files
 for article in articles:
     page = template
+    gpage = gtemplate
+
     replace_vars['paper'] = articles[article]
+    replace_vars['gpaper'] = garticles[article]
 
     for var in replace_vars:
         page = page.replace('<!-- ' + str(var) + ' -->', replace_vars[var])
+        gpage = gpage.replace('<!-- ' + str(var) + ' -->', replace_vars[var])
 
     with open('html/' + article + '.html', 'w') as f:
         f.write(page)
     
+    with open('gemini/' + article + '.gmi', 'w') as f:
+        f.write(gpage)

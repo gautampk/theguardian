@@ -1,7 +1,7 @@
 # The Guardian
-<!-- today_date_normal -->, retrieved at <!-- retrieved_timestamp --></em>
+<!-- today_date_normal -->, retrieved at <!-- retrieved_timestamp -->
 
-<!-- paper -->
+<!-- gpaper -->
 
 => https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2010/03/01/poweredbyguardianBLACK.png Powered by the Guardian
 
